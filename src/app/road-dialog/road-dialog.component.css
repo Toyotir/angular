@@ -1,0 +1,29 @@
+
+.mat-table {
+  overflow: auto;
+  width:600px;
+}
+.mat-row:hover{
+  cursor: pointer;
+  background-color: antiquewhite;
+}
+
+.mat-column-sheetnum {
+  max-width: 80px;
+  text-align: center;
+}
+/* .mat-column-date {
+  max-width: 240px;
+  text-align: center;
+}
+.mat-column-totprice {
+  max-width: 200px;
+  text-align: center;
+}
+.mat-column-option {
+  max-width: 80px;
+  text-align: center;
+} */
+.mat-cell {
+  text-align: center;
+}

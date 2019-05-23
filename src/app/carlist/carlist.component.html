@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<h2></h2>
+<!--<button mat-icon-button (click)="refresh()">
+    <mat-icon>refresh</mat-icon>
+</button>-->
+
+<div>
+    <mat-form-field>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search cars" #input>
+    </mat-form-field>
+    <mat-table #tablecar [dataSource]="dataSource" matSort >
+        <ng-container matColumnDef="brand">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Brand</mat-header-cell>
+            <mat-cell *matCellDef="let car">{{car.brand}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="model">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Model</mat-header-cell>
+            <mat-cell *matCellDef="let car">{{car.model}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="platenum">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Plate Number</mat-header-cell>
+            <mat-cell *matCellDef="let car">{{car.platenum}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="numTaxi" >
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Taxi Number</mat-header-cell>
+            <mat-cell *matCellDef="let car">{{car.numTaxi}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="option">
+            <mat-header-cell *matHeaderCellDef>Option
+                <button mat-icon-button color="primary" (click)="openDialog()">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let car">
+                <button mat-icon-button color="primary" (click)="editCar(car.id,car.brand,car.model,car.platenum,car.numTaxi)">
+                    <mat-icon aria-label="Edit">edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="delCar(car.id,car.platenum)">
+                    <mat-icon aria-label="Delete">delete</mat-icon>
+                </button>
+            </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+        <mat-row *matRowDef="let row; columns: displayedColumns" (click)="onRowClicked(row)"></mat-row>
+
+    </mat-table>
+    <mat-paginator [length]="" [pageSize]="5" [pageSizeOptions]="[5, 10,25]" showFirstLastButtons></mat-paginator>
+</div>
+<!-- <mat-expansion-panel>
+    <mat-expansion-panel-header>
+        This is the expansion title
+    </mat-expansion-panel-header>
+
+    <ng-template matExpansionPanelContent>
+        Some deferred content
+    </ng-template>
+</mat-expansion-panel> -->

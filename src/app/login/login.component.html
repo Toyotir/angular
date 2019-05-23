@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<h2>If you are a staff member please login</h2>
+
+  <form [formGroup]="form" (ngSubmit)="login()">
+      <!-- <div class="example-container"> -->
+    <mat-form-field>
+      <input matInput placeholder="Enter your username" formControlName="username" type='text'>
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+      <input matInput placeholder="Enter your password" formControlName="password" [type]="hide ? 'password' : 'text'">
+      <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+    </mat-form-field>
+    <br>
+    <button type="submit" mat-button color="primary">Login</button>
+  <!-- </div> -->
+  </form>
+
+

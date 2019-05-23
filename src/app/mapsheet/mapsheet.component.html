@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<body>
+  <table>
+    <tr>
+      <th>N°</th>
+      <th>Departure</th>
+      <th>Arrived</th>
+      <th>Cost</th>
+    </tr>
+    <tr>
+      <td>{{ride}}</td>
+      <td>{{depart}}</td>
+      <td>{{arrived}}</td>
+      <td>{{cost}}</td>
+      <!-- <td>{{id}}</td> -->
+    </tr>
+  </table>
+  <agm-map style="height: 500px" [latitude]="latA" [longitude]="lngA" [zoom]="zoom">
+      <agm-polyline>
+          <agm-polyline-point *ngFor="let point of toLatLngArray" [latitude]="point.lat" [longitude]="point.lng">
+          </agm-polyline-point>
+      </agm-polyline>
+      <agm-marker [latitude]="latA" [longitude]="lngA" >
+          <agm-info-window>
+              <strong>{{depart}}</strong>
+          </agm-info-window>
+      </agm-marker>
+      <agm-marker [latitude]="latB" [longitude]="lngB" >
+          <agm-info-window>
+              <strong>{{arrived}}</strong>
+          </agm-info-window>
+      </agm-marker>
+  </agm-map>
+</body>
+
+<!--
+<section>
+    <article>
+        <div id="map" style="height: 500px;width:500px" class="google-map"></div>
+    </article>
+</section>
+-->
+
+

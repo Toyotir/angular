@@ -1,0 +1,41 @@
+<!--<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Client</title>
+  <base href="/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+  <app-root></app-root>
+</body>
+</html>-->
+
+<!DOCTYPE html>
+<html ng-app="SampleApplication">
+    <head>
+        <meta charset="utf-8">
+        <title>Angular Sample - Taxi Application</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <!--  Angular Setup -->
+        <script src="bower_components/angular/angular.js"></script>
+        <script src="bower_components/angular-resource/angular-resource.js"></script>
+        <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+        <!--<script src="bower_components/angular-route/angular-route.js"></script>-->
+        <!-- Application Setup -->
+        <script src="public/appRoutes.js"></script>
+        <script src="public/app.js"></script>
+
+        <!--  Controllers 
+        <script src="public/components/taxi/controllers/home.control.js"></script>-->
+        <script src="public/components/taxi/controllers/taxi.control.js"></script>
+        <script src="public/components/taxi/services/car.service.js"></script>
+        <script src="public/components/taxi/services/driver.service.js"></script>
+        <script src="public/components/taxi/services/society.service.js"></script>
+    </head>
+    <body>
+        <!-- The dynamic templates will be served within this div -->
+        <ui-view></ui-view>
+    </body>
+</html>

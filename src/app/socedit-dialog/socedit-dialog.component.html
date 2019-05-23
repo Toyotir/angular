@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<h2 mat-dialog-title>Edit the society "{{data.name}}"</h2>
+<mat-dialog-content  [formGroup]="form">
+
+  <mat-form-field>
+      <input matInput placeholder="Name" formControlName="name">
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="TVA" formControlName="tva">
+  </mat-form-field>
+
+  <mat-form-field >
+    <mat-select placeholder="Owners" [compareWith]="compareFns"  formControlName="owners" multiple>
+      <mat-option *ngFor="let owner of ownerListFilter" [value]="owner.id">{{owner.id}}:{{owner.last_name}} {{owner.first_name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="Address" formControlName="adress">
+  </mat-form-field>
+
+  <mat-form-field>
+      <input matInput type="number"placeholder="Number" formControlName="addnum">
+    </mat-form-field>
+
+  <mat-form-field>
+    <input matInput type="number" min="1000" max="9992" placeholder="Locality" formControlName="locality">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Drivers" [compareWith]="compareFns" formControlName="drivers" multiple>
+      <mat-option *ngFor="let driver of driverList" [value]="driver.id">{{driver.id}}:{{driver.last_name}} {{driver.first_name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+    <mat-form-field>
+    <mat-select placeholder="Cars" [compareWith]="compareFns" formControlName="cars" multiple>
+      <mat-option *ngFor="let car of carListFilter" [value]="car.id">{{car.numTaxi}}|{{car.brand}} {{car.model}}:{{car.platenum}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button class="mat-raised-button"(click)="close()">Close</button>
+    <button type="submit" class="mat-raised-button mat-primary"(click)="save()">Update</button>
+</mat-dialog-actions>

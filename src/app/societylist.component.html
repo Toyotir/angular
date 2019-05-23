@@ -1,0 +1,51 @@
+<!--<h2>Societies</h2>
+<ul>
+    <li *ngFor="let s of societies">
+        {{s.name}} - {{s.tva}} - {{s.owner}}
+    </li>
+</ul>-->
+<h2></h2>
+<div>
+    <mat-form-field>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search society" #input>
+    </mat-form-field>
+    <mat-table [dataSource]="dataSource" matSort >
+
+        <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Society</mat-header-cell>
+            <mat-cell *matCellDef="let soc">{{soc.name}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="tva">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>TVA</mat-header-cell>
+            <mat-cell *matCellDef="let soc">{{soc.tva}}</mat-cell>
+        </ng-container>
+<!--       <ng-container matColumnDef="owners">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>owners</mat-header-cell>
+            <mat-cell *matCellDef="let soc">{{soc.owners.last_name}}</mat-cell>
+        </ng-container>-->
+        <ng-container matColumnDef="option">
+            <mat-header-cell *matHeaderCellDef>option
+                <button mat-icon-button color="primary" (click)="opencreatesoc()">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let soc">
+                <button mat-icon-button color="primary" (click)="editSoc(soc.id,soc.name,soc.tva,soc.owners,soc.adress,soc.addnum,soc.locality,soc.drivers,soc.cars)" >
+                  <mat-icon aria-label="Edit">edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="delSoc()">
+                  <mat-icon aria-label="Delete">delete</mat-icon>
+                </button>
+                <button mat-icon-button color="accent" (click)="details(soc.name,soc.id)">
+                    <mat-icon aria-label="List">list</mat-icon>
+                </button>
+            </mat-cell>
+
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+        <mat-row *matRowDef="let row; columns: displayedColumns" (click)="onRowClicked(row)"></mat-row>
+
+    </mat-table>
+    <mat-paginator  [pageSize]="10" [pageSizeOptions]="[10,20,40]"></mat-paginator>
+</div>

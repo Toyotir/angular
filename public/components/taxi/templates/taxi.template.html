@@ -1,0 +1,33 @@
+<div ng-controller="TaxiController">
+    Societies
+    <div ng-repeat="society in societies">
+        <div style="margin-left: 20px;">
+            name: {{ society.name }} <br/>
+
+            <div ng-repeat="drivers in societies">
+                drivers:{{ society.drivers }}
+            </div>
+            
+            <hr/>
+        </div>
+    </div>
+    <br/>
+    Cars
+    <div ng-repeat="car in cars">
+        <div style="margin-left: 20px;">
+            model: {{ car.model }} <br/>
+            
+            <hr/>
+        </div>
+    </div>
+    <br/>
+    Drivers
+    <div ng-repeat="driver in drivers">
+        <div style="margin-left: 20px;">
+            lastname: {{ driver.lastname }} <br/>
+            
+            <hr/>
+        </div>
+    </div>
+    
+</div>

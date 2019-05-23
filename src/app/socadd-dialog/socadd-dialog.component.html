@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+<h2 mat-dialog-title>Create a new society</h2>
+<mat-dialog-content [formGroup]="form">
+
+  <mat-form-field>
+      <input matInput placeholder="Name" formControlName="name">
+      <mat-error *ngFor="let validation of validation_messages.name">
+        <div *ngIf="this.form.get('name').hasError(validation.type)">
+          {{ validation.message }}
+        </div>
+      </mat-error>
+      <mat-error *ngIf="form.controls['name'].hasError('nop')">This society already exists</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput #tva placeholder="TVA" maxlength="12" formControlName="tva">
+    <mat-hint align="end">{{tva.value.length}} / 12</mat-hint>
+      <mat-error *ngFor="let validation of validation_messages.tva">
+        <div *ngIf="this.form.get('tva').hasError(validation.type)">
+          {{ validation.message }}
+        </div>
+      </mat-error>
+      <mat-error *ngIf="form.controls['tva'].hasError('nop')">This TVA already exists</mat-error>
+  </mat-form-field>
+
+  <mat-form-field >
+    <mat-select placeholder="owners" formControlName="owners" multiple>
+      <mat-option *ngFor="let driver of ownerListFilter" [value]="driver.id">{{driver.id}}:{{driver.last_name}} {{driver.first_name}}</mat-option>
+    </mat-select>
+      <mat-error *ngFor="let validation of validation_messages.owners">
+        <div *ngIf="this.form.get('owners').hasError(validation.type)">
+          {{ validation.message }}
+        </div>
+      </mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="Address" formControlName="adress">
+      <mat-error *ngFor="let validation of validation_messages.adress">
+        <div *ngIf="this.form.get('adress').hasError(validation.type)">
+          {{ validation.message }}
+        </div>
+      </mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+      <input matInput type="number"placeholder="Number" min="0" formControlName="addnum">
+      <mat-error *ngFor="let validation of validation_messages.addnum">
+        <div *ngIf="this.form.get('addnum').hasError(validation.type)">
+          {{ validation.message }}
+        </div>
+      </mat-error>
+    </mat-form-field>
+
+  <mat-form-field>
+    <input matInput type="number" min="1000" max="9992" placeholder="Locality" formControlName="locality">
+      <mat-error *ngFor="let validation of validation_messages.locality">
+        <div *ngIf="this.form.get('locality').hasError(validation.type)">
+          {{ validation.message }}
+        </div>
+      </mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Drivers" formControlName="drivers" multiple>
+      <mat-option *ngFor="let driver of driverList" [value]="driver.id">{{driver.id}}:{{driver.last_name}} {{driver.first_name}}</mat-option>
+    </mat-select>
+      <mat-error *ngFor="let validation of validation_messages.drivers">
+        <div *ngIf="this.form.get('drivers').hasError(validation.type)">
+          {{ validation.message }}
+        </div>
+      </mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Cars" formControlName="cars" multiple>
+      <mat-option *ngFor="let car of carListFilter" [value]="car.id">N°{{car.numTaxi}}|{{car.brand}} {{car.model}}:{{car.platenum}}</mat-option>
+    </mat-select>
+      <mat-error *ngFor="let validation of validation_messages.cars">
+        <div *ngIf="this.form.get('cars').hasError(validation.type)">
+          {{ validation.message }}
+        </div>
+      </mat-error>
+  </mat-form-field>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button class="mat-raised-button"(click)="close()">Close</button>
+    <button type="submit" class="mat-raised-button mat-primary"(click)="save()" [disabled]=!form.valid >Save</button>
+</mat-dialog-actions>

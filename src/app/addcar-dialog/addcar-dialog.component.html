@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<h2 mat-dialog-title>Create a new car</h2>
+<mat-dialog-content [formGroup]="form">
+
+  <mat-form-field>
+      <input matInput placeholder="brand" formControlName="brand" required>
+      <mat-error *ngFor="let validation of validation_messages.brand">
+        <div *ngIf="this.form.get('brand').hasError(validation.type)">
+          {{ validation.message }}
+        </div>
+      </mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="model" formControlName="model" required>
+    <mat-error *ngFor="let validation of validation_messages.model">
+      <div *ngIf="this.form.get('model').hasError(validation.type)">
+        {{ validation.message }}
+      </div>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput #platenum placeholder="platenum" maxlength="7" formControlName="platenum"
+     required>
+    <mat-hint align="end">{{platenum.value.length}} / 7</mat-hint>
+    <mat-error *ngFor="let validation of validation_messages.platenum">
+      <div *ngIf="this.form.get('platenum').hasError(validation.type)">
+        {{ validation.message }}
+      </div>
+    </mat-error>
+    <mat-error *ngIf="form.controls['platenum'].hasError('nop')">This plate already exists</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+      <input matInput type="number"placeholder="numTaxi" min="0" max="9999"  formControlName="numTaxi" required>
+      <mat-error *ngFor="let validation of validation_messages.numTaxi">
+        <div *ngIf="this.form.get('numTaxi').hasError(validation.type)">
+          {{ validation.message }}
+        </div>
+      </mat-error>
+      <mat-error *ngIf="form.controls['numTaxi'].hasError('nop')">This taxi already exists</mat-error>
+   </mat-form-field>
+  <!--<div>{{errooo}}</div>-->
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button class="mat-raised-button"(click)="close()">Close</button>
+    <button type="submit" class="mat-raised-button mat-primary"(click)="save()" [disabled]="!form.valid" >Save</button>
+</mat-dialog-actions>
