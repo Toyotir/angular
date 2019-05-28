@@ -23,6 +23,6 @@ export const DD_MM_YYYY_Format = {
 ]
 })
 export class AppComponent {
-  constructor(private adminS:AdminService){}
+  constructor(public adminS: AdminService){}
   title = 'Taxi Manager';
 }

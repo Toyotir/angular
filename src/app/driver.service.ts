@@ -157,7 +157,7 @@ export class DriverService {
     }
 
     public deleteDriver(data:string):Observable<boolean>{
-        return this.httpC.delete(`${URL}/api/drivers/`+data,{headers:{
+        return this.httpC.delete(`${URL}/api/users/`+data,{headers:{
             ['Content-Type']:'application/json',
             ['Authorization']: 'JWT ' + this.adminS.tokenStorage.token,
             }}).pipe(map(res=>true),catchError( err => {return throwError(err+data)})
@@ -165,7 +165,7 @@ export class DriverService {
     }
     public updateDriver(data:Driver):Observable<boolean>{
         console.log("update",data)
-        return this.httpC.put(`${URL}/api/drivers/`+data.id,data,{headers:{
+        return this.httpC.put(`${URL}/api/users/`+data.id,data,{headers:{
             ['Content-Type']:'application/json',
             ['Authorization']: 'JWT ' + this.adminS.tokenStorage.token,
             }})

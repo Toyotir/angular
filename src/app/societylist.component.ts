@@ -8,6 +8,7 @@ import { RoadDialogComponent } from "./road-dialog/road-dialog.component"
 import { Observable } from 'rxjs';
 import { Driver, DriverService, User } from "./driver.service"
 import {Car,CarService} from "./car.service"
+import {AdminService} from './admin.service'
 
 
 @Component({
@@ -31,7 +32,7 @@ export class SocietyListComponent implements OnInit {
 
     @ViewChild('input') input: ElementRef;
 
-    constructor(private societyService: SocietyService, private dialog: MatDialog) { }
+    constructor(private societyService: SocietyService, private dialog: MatDialog,public adminS:AdminService) { }
 
     ngOnInit() {
         this.societyService.getAll().subscribe(res => {

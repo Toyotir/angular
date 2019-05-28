@@ -59,7 +59,7 @@
               </mat-cell>
           </ng-container> -->
           <mat-header-row *matHeaderRowDef="displayedColumnstwo"></mat-header-row>
-          <mat-row *matRowDef="let row; columns: displayedColumnstwo"></mat-row>
+          <mat-row *matRowDef="let row; columns: displayedColumnstwo" (click)="openBottomMap(row.id)"></mat-row>
         </mat-table>
       </mat-cell>
     </ng-container>
@@ -67,12 +67,12 @@
     <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns"
             class="ride-row"
-            [class.ride-row]="expandedRide == row"
+            [class.ride-row]="expandedRide === row"
             (click)="expandedRide = row">
     </mat-row>
     <mat-row *matRowDef="let row; columns: ['expandedDetail'];"
-            [@detailExpand]="row.rs != expandedRide ? 'expanded' : 'collapsed'" (click)="openBottomMap(row.id)"
-            matTooltip="Info about the action" style="overflow: hidden">
+            [@detailExpand]="row == expandedRide ? 'expanded' : 'collapsed'"
+            style="overflow: hidden">
     </mat-row>
   </mat-table>
 

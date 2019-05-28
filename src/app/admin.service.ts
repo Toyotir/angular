@@ -2,15 +2,29 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Http, RequestOptions } from "@angular/http";
 import { Observable,interval,timer } from 'rxjs';
-import { map,catchError } from 'rxjs/operators';
+import { map,catchError,mergeMap } from 'rxjs/operators';
 import { JwtHelperService,JwtModule,JwtModuleOptions } from '@auth0/angular-jwt';
 import { stringify } from 'querystring';
 import { DatePipe } from '@angular/common';
-
+import { DriverService } from './driver.service'
 export class TokenDRF {
   token:string;
   constructor(data){
       this.token = data.token;
+  }
+}
+export class User {
+  username : string;
+  password : string;
+  lastname:string;
+  firstname:string;
+  is_staff:boolean;
+  constructor(data){
+      this.username = data.username;
+      this.password = data.password;
+      this.lastname = data.lastname;
+      this.firstname = data.firstname;
+      this.is_staff = data.is_staff;
   }
 }
 
@@ -24,6 +38,7 @@ const URL = 'http://localhost:8000';
 export class AdminService {
   private httpOptions: any;
   isLog: boolean;
+  isAdmin: boolean;
   public token: string;
   public token_expires: Date;
   public expirationDate;
@@ -56,23 +71,61 @@ export class AdminService {
   //     }
   //   );
   // }
-  public login(data){
-    // console.log('ask token', data)
-    sessionStorage.setItem('username',data.username)
-    sessionStorage.setItem('password',data.password)
-    return this.http.post(`${URL}/api-token-auth/`, data).pipe(map(
-      data => {
+  public getUser(id:string){
+    return this.httpClient.get<User>(`${URL}/api/users/`+id,{headers:{
+      ['Content-Type']:'application/json',
+      // ['Content-Type']: 'application/json',
+      ['Authorization']: 'JWT ' + this.tokenStorage.token,
+      }}
+    ).pipe(map(res=>{
+      this.isLog = false;
+      this.isAdmin = res.is_staff;
+      console.log('isadminservice2',this.isAdmin)
+    }))
+    // .pipe(map(res=>{
+    //   this.isAdmin = res.is_staff;
+    //   true;
+      // if (res.is_staff === true) {
+      //   this.isAdmin = true
+      //   console.log('isadminservice',this.isAdmin)
+      //   return true;
+      // } else {
+      //   console.log('isadminservicefalse',this.isAdmin)
+      //   return false;
+      // }
+    // }));
+ }
+  public login(data):Observable<boolean> {
+    sessionStorage.setItem('username', data.username);
+    sessionStorage.setItem('password', data.password);
+    return this.http.post(`${URL}/api-token-auth/`, data).pipe(map( res1 => {
         this.isLog = true;
-        // sessionStorage.setItem('token',data.json())
-        this.tokenStorage = new TokenDRF(data.json())
-        sessionStorage.setItem('token',this.tokenStorage.token)
-        this.updateData(this.tokenStorage);
+        this.tokenStorage = new TokenDRF(res1.json());
+        // sessionStorage.setItem('token', this.tokenStorage.token);
+        if (this.tokenStorage !== null) {
+          console.log('isadminservice1',this.isAdmin)
+          const helper = new JwtHelperService();
+          const id = helper.decodeToken(this.tokenStorage.token);
+          this.isAdmin = true;
+          this.getUser(id.user_id).subscribe();
+          return true;
+          // if(this.getUser(id.user_id).subscribe()) {
+          //   this.isAdmin = true;
+          //   console.log('true')
+          // } else {
+          //   this.isAdmin = false;
+          //   console.log('false')
+          // }
+        }
+        else {
+          return false;
+        }
+        // this.updateData(this.tokenStorage);
         // console.log('from django sotrage', sessionStorage.getItem('token'),'+',this.tokenStorage.token)
-        return true;
-      },
-      err => {
+        // return res1;
+    }, err => {
         // this.errors = err['error'];
-      }
+       }
     ));
   }
 
@@ -95,7 +148,8 @@ export class AdminService {
     const helper = new JwtHelperService();
     var exp = helper.decodeToken(token)
     const timer3 = timer(new Date(exp.exp*1000-10000), 3600000);
-    console.log('timer3',timer3)
+    // const timer3 = timer(8000, 8000);
+    // console.log('timer3',timer3)
     timer3.subscribe(res=>{
       console.log('in timer',res,exp.exp+3590000,timer3)
         this.refreshToken().subscribe(res=>{ res })
@@ -110,19 +164,20 @@ export class AdminService {
 
 
   public logout() {
-    this.token = null
-    this.isLog = false
-    this.username = null
-    this.password = null
+    this.token = null;
+    this.isLog = false;
+    this.isAdmin = false;
+    this.username = null;
+    this.password = null;
     this.tokenStorage = null;
-    sessionStorage.removeItem('username')
-    sessionStorage.removeItem('password')
-    sessionStorage.removeItem('token')
+    sessionStorage.removeItem('username');
+    sessionStorage.removeItem('password');
+    sessionStorage.removeItem('token');
   }
 
   private updateData(token) {
     const helper = new JwtHelperService();
-    console.log('token',helper.decodeToken(token.token),helper.getTokenExpirationDate(token.token))
+    // console.log('token',helper.decodeToken(token.token),helper.getTokenExpirationDate(token.token))
     const exp = helper.decodeToken(token.token)
     this.token = token;
     // this.errors = [];

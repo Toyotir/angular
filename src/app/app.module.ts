@@ -52,6 +52,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { AgmCoreModule, GoogleMapsAPIWrapper, MarkerManager, InfoWindowManager } from '@agm/core';
 import { MapsheetComponent } from './mapsheet/mapsheet.component';
 import { DelsocDialogComponent } from './delsoc-dialog/delsoc-dialog.component';
+import { InvalidComponent } from './invalid/invalid.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import { DelsocDialogComponent } from './delsoc-dialog/delsoc-dialog.component';
     LoginComponent,
     LogoutComponent,
     MapsheetComponent,
-    DelsocDialogComponent
+    DelsocDialogComponent,
+    InvalidComponent
   ],
   imports: [
     BrowserModule,
