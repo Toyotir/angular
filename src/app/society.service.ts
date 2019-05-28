@@ -95,8 +95,9 @@ export class Ride {
 //     owner:string;
 // }
 
-const URL = 'http://localhost:8000';
+// const URL = 'http://localhost:8000';
 // const URL = 'http://192.168.1.11:8000';
+const URL = 'https://taxidrf.herokuapp.com';
 
 @Injectable()
 export class SocietyService {

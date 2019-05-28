@@ -5,7 +5,7 @@
     </li>
 </ul>-->
 <h2></h2>
-<div>
+<div *ngIf="adminS.isAdmin" >
     <mat-form-field>
         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search society" #input>
     </mat-form-field>

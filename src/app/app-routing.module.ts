@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { SocietyListComponent } from './societylist.component';
 import { DriverlistComponent } from './driverlist/driverlist.component';
 import { CarlistComponent } from './carlist/carlist.component'
-import { AuthGuard } from './auth.guard'
+import { AuthGuard,Adminguard } from './auth.guard'
 import { LoginComponent } from './login/login.component';
 import { LogoutComponent } from './logout/logout.component';
 const routes: Routes = [
@@ -17,9 +17,15 @@ const routes: Routes = [
     children: [
       // { path: '', redirectTo: 'appComp', pathMatch: 'full' },
       { path: 'logout', component: LogoutComponent },
-      { path: 'soc', component: SocietyListComponent },
-      { path: 'driver', component: DriverlistComponent },
-      { path: 'car', component: CarlistComponent }
+      {
+        path: '',
+        canActivate: [Adminguard],
+        children: [
+          { path: 'soc', component: SocietyListComponent },
+          { path: 'driver', component: DriverlistComponent },
+          { path: 'car', component: CarlistComponent }
+        ]
+      }
 
     ]
   },

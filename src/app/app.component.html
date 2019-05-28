@@ -5,7 +5,7 @@
     <a>
       <img>
     </a>
-      <ul class="ng-ul" *ngIf="adminS.isLog">
+      <ul class="ng-ul" *ngIf="adminS.isAdmin">
         <li class="ng-star-inserted">
           <a class="nav-link">
             <button class="nav-link-inner" [routerLink]="['/soc']">Societies List</button>
@@ -27,12 +27,12 @@
           </a>
         </li>
       </ul>
-      <ul class="ng-ul" *ngIf="!adminS.isLog">
-        <li class="ng-star-inserted">
+      <ul class="ng-ul" *ngIf="!adminS.isAdmin">
+        <!-- <li class="ng-star-inserted">
           <a class="nav-link">
             <button class="nav-link-inner" [routerLink]="['/login']">Login</button>
           </a>
-        </li>
+        </li> -->
       </ul>
   </mat-toolbar-row>
 </mat-toolbar>

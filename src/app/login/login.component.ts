@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {AdminService} from '../admin.service'
 import {FormBuilder, Validators,ValidatorFn,FormControl, FormGroup,AbstractControl} from "@angular/forms";
 import {Router} from '@angular/router';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,7 @@ import {Router} from '@angular/router';
 export class LoginComponent implements OnInit {
   form:FormGroup;
   hide = true;
-  constructor(private adminS:AdminService,private fb: FormBuilder,private router: Router) { }
+  constructor(private adminS:AdminService,private fb: FormBuilder,private snackbar: MatSnackBar,private router: Router) { }
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -22,7 +23,7 @@ export class LoginComponent implements OnInit {
 
   login(){
     this.adminS.login(this.form.value).subscribe(()=>{
-      if(this.adminS.isLog){
+      if(this.adminS.isAdmin){
         console.log('yolo');
         this.adminS.tokenStartTimer(this.adminS.tokenStorage.token)
         this.form.reset()
@@ -31,6 +32,10 @@ export class LoginComponent implements OnInit {
         this.router.navigate([returnUrl]);
 
       }
+    },err => {
+      // this.snackbar.open('failed','undo', {
+      //   duration: 2000,
+      // });
     })
   }
 

@@ -13,9 +13,22 @@ export class TokenDRF {
       this.token = data.token;
   }
 }
-
-const URL = 'http://localhost:8000';
-// const URL = 'https://taxidrf.herokuapp.com'
+export class User {
+  username : string;
+  password : string;
+  lastname:string;
+  firstname:string;
+  is_staff:boolean;
+  constructor(data){
+      this.username = data.username;
+      this.password = data.password;
+      this.lastname = data.lastname;
+      this.firstname = data.firstname;
+      this.is_staff = data.is_staff;
+  }
+}
+// const URL = 'http://localhost:8000';
+const URL = 'https://taxidrf.herokuapp.com';
 
 
 @Injectable({
@@ -28,6 +41,7 @@ export class AdminService {
   public token_expires: Date;
   public expirationDate;
   public isExpired;
+  isAdmin: boolean;
   public username: string;
   password: string;
   redirectUrl: string;
@@ -56,21 +70,48 @@ export class AdminService {
   //     }
   //   );
   // }
-  public login(data){
+  public getUser(id:string){
+    return this.httpClient.get<User>(`${URL}/api/users/`+id,{headers:{
+      ['Content-Type']:'application/json',
+      // ['Content-Type']: 'application/json',
+      ['Authorization']: 'JWT ' + this.tokenStorage.token,
+      }}
+    ).pipe(map(res=>{
+      this.isLog = false;
+      this.isAdmin = res.is_staff;
+      console.log('isadminservice2',this.isAdmin)
+    }));
+ }
+  public login(data):Observable<boolean> {
     // console.log('ask token', data)
     sessionStorage.setItem('username',data.username)
     sessionStorage.setItem('password',data.password)
-    return this.http.post(`${URL}/api-token-auth/`, data).pipe(map(
-      data => {
+    return this.http.post(`${URL}/api-token-auth/`, data).pipe(map(res1 => {
+
         this.isLog = true;
         // sessionStorage.setItem('token',data.json())
-        this.tokenStorage = new TokenDRF(data.json())
+        this.tokenStorage = new TokenDRF(res1.json());
         sessionStorage.setItem('token',this.tokenStorage.token)
         this.updateData(this.tokenStorage);
         // console.log('from django sotrage', sessionStorage.getItem('token'),'+',this.tokenStorage.token)
-        return true;
-      },
-      err => {
+        if (this.tokenStorage !== null) {
+          console.log('isadminservice1',this.isAdmin)
+          const helper = new JwtHelperService();
+          const id = helper.decodeToken(this.tokenStorage.token);
+          this.isAdmin = true;
+          this.getUser(id.user_id).subscribe();
+          return true;
+          // if(this.getUser(id.user_id).subscribe()) {
+          //   this.isAdmin = true;
+          //   console.log('true')
+          // } else {
+          //   this.isAdmin = false;
+          //   console.log('false')
+          // }
+        } else {
+          return false;
+        }
+      }, err => {
         // this.errors = err['error'];
       }
     ));
@@ -111,7 +152,7 @@ export class AdminService {
 
   public logout() {
     this.token = null
-    this.isLog = false
+    this.isLog = false;
     this.username = null
     this.password = null
     this.tokenStorage = null;

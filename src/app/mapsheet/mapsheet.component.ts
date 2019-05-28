@@ -37,7 +37,7 @@ export class MapsheetComponent implements OnInit {
   lngB: number ;
   toLatLngArray: Array<{ lat: number, lng: number }> = [];
   zoom: number = 11;
-
+  polymeters;
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private societyService: SocietyService,
   private mapsheet: MatDialogRef<MapsheetComponent>) {
     console.log('idride', data.id);
@@ -72,6 +72,16 @@ export class MapsheetComponent implements OnInit {
     this.lngA = this.toLatLngArray[0].lng;
     this.latB = this.toLatLngArray[this.toLatLngArray.length - 1].lat;
     this.lngB = this.toLatLngArray[this.toLatLngArray.length - 1].lng;
+    var drawPath = new google.maps.Polyline({
+      path: this.toLatLngArray,
+      geodesic: true,
+      strokeColor: '#FF0000',
+      strokeOpacity: 1.0,
+      strokeWeight: 2
+    });
+    console.log('draw', this.toLatLngArray)
+    var km = google.maps.geometry.spherical.computeLength(drawPath.getPath());
+    this.polymeters = (km / 1000).toFixed(2);
   }
   // loadMap() {
   //   let map;
