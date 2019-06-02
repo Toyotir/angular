@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef, MatFormFieldControl} from "@angular/material";
+import {MAT_DIALOG_DATA, MatDialogRef, MatFormFieldControl, MatSnackBar} from "@angular/material";
 import {FormBuilder, Validators, FormControl, FormGroup, AbstractControl} from "@angular/forms";
 import {SocietyService, Society} from "../society.service"
 import { formatDate, DatePipe } from '@angular/common';
@@ -22,7 +22,8 @@ export class SocaddDialogComponent implements OnInit {
   carListFilter: any = [];
   validation_messages: any;
   constructor(private societyService: SocietyService, private driverservice: DriverService, private carservice: CarService,
-    private fb: FormBuilder, private adminS: AdminService, private dialogRef: MatDialogRef<SocaddDialogComponent>) { }
+    private fb: FormBuilder,private snackBar: MatSnackBar, private adminS: AdminService,
+    private dialogRef: MatDialogRef<SocaddDialogComponent>) { }
 
   ngOnInit() {
 
@@ -32,12 +33,12 @@ export class SocaddDialogComponent implements OnInit {
       this.driverList = res.filter(function(value) {
         return value.is_staff === false;
       });
-      console.log('addsoc',this.driverList);
+      // console.log('addsoc',this.driverList);
       // liste des proprio
       this.ownerListFilter = this.driverList.filter(function(value) {
         return value.driver.owner === true;
       });
-      console.log('owner',this.ownerListFilter);
+      // console.log('owner',this.ownerListFilter);
       // this.filterOwner();
     });
     this.carservice.getAll().subscribe(res => {
@@ -46,7 +47,7 @@ export class SocaddDialogComponent implements OnInit {
         return value.society == null;
       });
       // this.filterCars();
-      console.log('car', this.carList);
+      // console.log('car', this.carList);
     });
     // console.log("table",this.driverList)
     this.validation_messages = {
@@ -146,7 +147,17 @@ export class SocaddDialogComponent implements OnInit {
   // }
 
   save() {
-    this.dialogRef.close(this.societyService.createDriver(this.form.value));
+    this.dialogRef.close(this.societyService.createSoc(this.form.value).subscribe(() => {
+      this.snackBar.open('succes', 'undo', {
+        duration: 2000,
+      });
+    },
+      err => {
+        this.snackBar.open(err, 'undo', {
+          duration: 2000,
+        });
+      }
+    ));
     console.log('save:' + this.form.value);
   }
   close() {

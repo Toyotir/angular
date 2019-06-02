@@ -5,16 +5,37 @@
 
   <mat-form-field>
       <input matInput placeholder="Lastname" formControlName="last_name">
+      <mat-error *ngFor="let validation of validation_messages.last_name">
+        <div *ngIf="this.form.get('last_name').hasError(validation.type)">
+          {{ validation.message }}
+        </div>
+      </mat-error>
   </mat-form-field>
 
   <mat-form-field>
       <input matInput placeholder="Firstname" formControlName="first_name">
+      <mat-error *ngFor="let validation of validation_messages.first_name">
+        <div *ngIf="this.form.get('first_name').hasError(validation.type)">
+          {{ validation.message }}
+        </div>
+      </mat-error>
   </mat-form-field>
     <mat-form-field>
       <input matInput placeholder="Username" formControlName="username">
+      <mat-error *ngFor="let validation of validation_messages.username">
+        <div *ngIf="this.form.get('username').hasError(validation.type)">
+          {{ validation.message }}
+        </div>
+    </mat-error>
   </mat-form-field>
     <mat-form-field>
-      <input matInput type="password" placeholder="Password" formControlName="password">
+      <input matInput type="password" placeholder="Password" minlength="8" formControlName="password">
+      <!-- <mat-hint align="end">{{password.value.length}} / 8</mat-hint> -->
+      <mat-error *ngFor="let validation of validation_messages.password">
+        <div *ngIf="this.form.get('password').hasError(validation.type)">
+          {{ validation.message }}
+        </div>
+    </mat-error>
   </mat-form-field>
     <mat-form-field>
       <input matInput style="display: none">
@@ -26,6 +47,11 @@
         <input matInput [matDatepicker]="datepicker"  placeholder="Birthdate" formControlName="birthdate">
         <mat-datepicker-toggle matSuffix [for]="datepicker" ></mat-datepicker-toggle>
         <mat-datepicker #datepicker></mat-datepicker>
+        <mat-error *ngFor="let validation of validation_messages.birthdate">
+          <div *ngIf="this.form.get('driver.birthdate').hasError(validation.type)">
+            {{ validation.message }}
+          </div>
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field>
@@ -35,20 +61,40 @@
 
     <mat-form-field>
       <input matInput placeholder="Address" formControlName="adress">
+      <mat-error *ngFor="let validation of validation_messages.adress">
+        <div *ngIf="this.form.get('driver.adress').hasError(validation.type)">
+          {{ validation.message }}
+        </div>
+    </mat-error>
     </mat-form-field>
 
     <mat-form-field>
         <input matInput type="number"placeholder="Number" formControlName="addnum">
+        <mat-error *ngFor="let validation of validation_messages.addnum">
+          <div *ngIf="this.form.get('driver.addnum').hasError(validation.type)">
+            {{ validation.message }}
+          </div>
+      </mat-error>
       </mat-form-field>
 
     <mat-form-field>
       <input matInput type="number" min="1000" max="9992" placeholder="Locality" formControlName="locality">
+      <mat-error *ngFor="let validation of validation_messages.locality">
+        <div *ngIf="this.form.get('driver.locality').hasError(validation.type)">
+          {{ validation.message }}
+        </div>
+    </mat-error>
     </mat-form-field>
 
     <mat-form-field >
         <input matInput [matDatepicker]="datepicker2"  placeholder="licenseExp" formControlName="licenseExp">
         <mat-datepicker-toggle matSuffix [for]="datepicker2" ></mat-datepicker-toggle>
         <mat-datepicker #datepicker2></mat-datepicker>
+        <mat-error *ngFor="let validation of validation_messages.licenseExp">
+          <div *ngIf="this.form.get('driver.licenseExp').hasError(validation.type)">
+            {{ validation.message }}
+          </div>
+      </mat-error>
     </mat-form-field>
   </mat-dialog-content>
 
@@ -56,5 +102,5 @@
 
 <mat-dialog-actions>
     <button class="mat-raised-button"(click)="close()">Close</button>
-    <button type="submit" class="mat-raised-button mat-primary"(click)="save()">Update</button>
+    <button type="submit" [disabled]="!form.valid" class="mat-raised-button mat-primary"(click)="save()">Update</button>
 </mat-dialog-actions>

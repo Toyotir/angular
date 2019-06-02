@@ -25,7 +25,7 @@ export class EditdriverDialogComponent implements OnInit {
   locality: Number;
   licenseExp: Date;
   // drivers:Driver[]
-
+  validation_messages: any;
   constructor(private driverservice: DriverService, @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder, private dialogRef: MatDialogRef<EditdriverDialogComponent>) {
     this.id = data.id;
@@ -79,7 +79,36 @@ export class EditdriverDialogComponent implements OnInit {
   checked: boolean;
   ngOnInit() {
     console.log('init');
-
+    this.validation_messages = {
+      'last_name': [
+          { type: 'required', message: 'lastname is required.' },
+        ],
+        'first_name': [
+          { type: 'required', message: 'firstname is required.' }
+        ],
+        'username': [
+          { type: 'required', message: 'username is required.' }
+        ],
+        'password': [
+          { type: 'required', message: 'password  is required.' },
+          // { type: 'pattern', message: 'must contains letter and number' }
+        ],
+        'birthdate': [
+          { type: 'required', message: 'birthdate  is required.' }
+        ],
+        'adress': [
+          { type: 'required', message: 'adress is required.' }
+        ],
+        'addnum': [
+          { type: 'required', message: 'addnum is required.' }
+        ],
+        'locality': [
+          { type: 'required', message: 'locality is required.' }
+        ],
+        'licenseExp': [
+          { type: 'required', message: 'licenseExp is required.' }
+        ],
+    };
   }
   // compareFn(d1: {value: boolean}, d2: {value: boolean}) {
   //   console.log(d1,"===",d2)

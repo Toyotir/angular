@@ -109,7 +109,7 @@ import { DelsocDialogComponent } from './delsoc-dialog/delsoc-dialog.component';
   entryComponents: [DriverDialogComponent, SocaddDialogComponent,
     SoceditDialogComponent, EditdriverDialogComponent, DeldriverDialogComponent,
     AddcarDialogComponent, EditcarDialogComponent, DelcarDialogComponent, RoadDialogComponent,
-    MapsheetComponent
+    MapsheetComponent, DelsocDialogComponent
   ]
 })
 export class AppModule { }

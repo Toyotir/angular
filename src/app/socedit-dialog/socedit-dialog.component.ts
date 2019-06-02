@@ -25,6 +25,7 @@ export class SoceditDialogComponent implements OnInit {
     drivers:Driver[]
     cars:Car[];
     ownerListFilter: any = [];
+    validation_messages: any;
   constructor(private societyService:SocietyService,private driverservice:DriverService,private carservice:CarService,
     @Inject(MAT_DIALOG_DATA) public data: any,private fb: FormBuilder,private adminS: AdminService,private dialogRef : MatDialogRef<SoceditDialogComponent>) {
       this.id = data.id
@@ -63,7 +64,34 @@ export class SoceditDialogComponent implements OnInit {
       locality:this.locality,
       drivers:this.drivers,
       cars:this.cars
-    })
+    });
+    this.validation_messages = {
+      'name': [
+          { type: 'required', message: 'name is required.' },
+        ],
+        'tva': [
+          { type: 'required', message: 'TVA is required.' },
+          // { type: 'pattern', message: 'must be "be + 10 numbers.' }
+        ],
+        'owners': [
+          { type: 'required', message: 'owners is required.' }
+        ],
+        'adress': [
+          { type: 'required', message: 'adress  is required.' }
+        ],
+        'addnum': [
+          { type: 'required', message: 'number  is required.' }
+        ],
+        'locality': [
+          { type: 'required', message: 'locality is required.' }
+        ],
+        'drivers': [
+          { type: 'required', message: 'drivers is required.' }
+        ],
+        'cars': [
+          { type: 'required', message: 'cars is required.' }
+        ],
+    };
   }
 
   filterCars(){

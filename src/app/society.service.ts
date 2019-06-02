@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, of } from 'rxjs';
 import { Http, RequestOptions } from "@angular/http";
 import { HttpClient, HttpParams } from "@angular/common/http";
 // import { Time } from "@angular/common"
@@ -111,9 +111,9 @@ export class SocietyService {
             }
         })
     }
-    //society add
-    public createDriver(data: Society) {
-        console.log("Dialog outputService:", data)
+
+    public createSoc(data: Society) {
+        // console.log("Dialog outputService:", data)
         // return this.http.post(`${URL}/api/drivers`,JSON.stringify(data));
         return this.httpc.post(`${URL}/api/societies`, data, {
             headers: {
@@ -121,19 +121,18 @@ export class SocietyService {
                 ['Authorization']: 'JWT ' + this.adminS.tokenStorage.token,
             }
         })
-            .pipe(map(res => { return res })), catchError(err => { return throwError(err + data) });
     }
 
-    public deleteSociety(data: Society): Observable<boolean> {
-        console.log("Dialog outputService:", data.id)
-        return this.httpc.delete(`${URL}/api/societies/` + data.id, {
+    public deleteSociety(id): Observable<boolean> {
+        console.log("Dialog outputService:", id)
+        return this.httpc.delete(`${URL}/api/societies/` + id, {
             headers: {
                 ['Content-Type']: 'application/json',
                 ['Authorization']: 'JWT ' + this.adminS.tokenStorage.token,
             }
         })
             .pipe(map(res => true),
-                catchError(err => { return throwError(err + data) })
+                catchError(err => { return throwError(err) })
             )
     }
 
@@ -177,7 +176,7 @@ export class SocietyService {
     }
 
     public getRide(id): Observable<Ride> {
-        return this.httpc.get<Ride>(`${URL}/api/rides/` + id, {
+        return this.httpc.get<Ride>(`${URL}/api/rides?id=` + id, {
             headers: {
                 ['Content-Type']: 'application/json',
                 ['Authorization']: 'JWT ' + this.adminS.tokenStorage.token,

@@ -153,6 +153,7 @@ export class AdminService {
   public logout() {
     this.token = null
     this.isLog = false;
+    this.isAdmin = false;
     this.username = null
     this.password = null
     this.tokenStorage = null;

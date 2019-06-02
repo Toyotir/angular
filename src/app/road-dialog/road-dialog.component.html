@@ -71,7 +71,7 @@
             (click)="expandedRide = row">
     </mat-row>
     <mat-row *matRowDef="let row; columns: ['expandedDetail'];"
-            [@detailExpand]="row.rs == expandedRide ? 'expanded' : 'collapsed'"
+            [@detailExpand]="row == expandedRide ? 'expanded' : 'collapsed'"
             style="overflow: hidden">
     </mat-row>
   </mat-table>
