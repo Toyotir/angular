@@ -4,7 +4,7 @@
 <mat-dialog-content [formGroup]="form">
 
   <mat-form-field>
-      <input matInput placeholder="brand" formControlName="brand" required>
+      <input matInput placeholder="Brand" formControlName="brand" required>
       <mat-error *ngFor="let validation of validation_messages.brand">
         <div *ngIf="this.form.get('brand').hasError(validation.type)">
           {{ validation.message }}
@@ -13,7 +13,7 @@
   </mat-form-field>
 
   <mat-form-field>
-    <input matInput placeholder="model" formControlName="model" required>
+    <input matInput placeholder="Model" formControlName="model" required>
     <mat-error *ngFor="let validation of validation_messages.model">
       <div *ngIf="this.form.get('model').hasError(validation.type)">
         {{ validation.message }}
@@ -22,7 +22,7 @@
   </mat-form-field>
 
   <mat-form-field>
-    <input matInput #platenum placeholder="platenum" maxlength="7" formControlName="platenum"
+    <input matInput #platenum placeholder="Plate Number" maxlength="7" formControlName="platenum"
      required>
     <mat-hint align="end">{{platenum.value.length}} / 7</mat-hint>
     <mat-error *ngFor="let validation of validation_messages.platenum">
@@ -34,7 +34,7 @@
   </mat-form-field>
 
   <mat-form-field>
-      <input matInput type="number"placeholder="numTaxi" min="0" max="9999"  formControlName="numTaxi" required>
+      <input matInput type="number"placeholder="Taxi Number" min="0" max="9999"  formControlName="numTaxi" required>
       <mat-error *ngFor="let validation of validation_messages.numTaxi">
         <div *ngIf="this.form.get('numTaxi').hasError(validation.type)">
           {{ validation.message }}

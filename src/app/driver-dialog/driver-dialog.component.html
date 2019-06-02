@@ -22,7 +22,7 @@
   </mat-form-field>
 
   <mat-form-field>
-    <input matInput placeholder="username" formControlName="username">
+    <input matInput placeholder="Username" formControlName="username">
     <mat-error *ngFor="let validation of validation_messages.username">
         <div *ngIf="this.form.get('username').hasError(validation.type)">
           {{ validation.message }}
@@ -101,5 +101,5 @@
 
 <mat-dialog-actions>
     <button class="mat-raised-button"(click)="close()">Close</button>
-    <button type="submit" class="mat-raised-button mat-primary"(click)="save()">Save</button>
+    <button type="submit" [disabled]="!form.valid" class="mat-raised-button mat-primary"(click)="save()">Save</button>
 </mat-dialog-actions>

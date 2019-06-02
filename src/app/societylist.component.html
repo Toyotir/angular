@@ -9,7 +9,7 @@
     <mat-form-field>
         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search society" #input>
     </mat-form-field>
-    <mat-table [dataSource]="dataSource" matSort >
+    <mat-table #tablesociety [dataSource]="dataSource" matSort >
 
         <ng-container matColumnDef="name">
             <mat-header-cell *matHeaderCellDef mat-sort-header>Society</mat-header-cell>
@@ -33,7 +33,7 @@
                 <button mat-icon-button color="primary" (click)="editSoc(soc.id,soc.name,soc.tva,soc.owners,soc.adress,soc.addnum,soc.locality,soc.drivers,soc.cars)" >
                   <mat-icon aria-label="Edit">edit</mat-icon>
                 </button>
-                <button mat-icon-button color="warn" (click)="delSoc()">
+                <button mat-icon-button color="warn" (click)="delSoc(soc.id,soc.name)">
                   <mat-icon aria-label="Delete">delete</mat-icon>
                 </button>
                 <button mat-icon-button color="accent" (click)="details(soc.name,soc.id)">

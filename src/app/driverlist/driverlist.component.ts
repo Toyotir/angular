@@ -1,5 +1,5 @@
 import { Component, OnInit ,ElementRef,ViewChild} from '@angular/core';
-import {MatPaginator, MatSort, MatTableDataSource} from "@angular/material";
+import {MatPaginator, MatSort, MatTableDataSource,MatTable} from "@angular/material";
 import {MatDialog, MatDialogConfig} from "@angular/material";
 import { DriverService,Driver, User } from '../driver.service';
 import { DriverDialogComponent } from '../driver-dialog/driver-dialog.component';
@@ -28,7 +28,7 @@ export class DriverlistComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   @ViewChild(MatSort) sort: MatSort;
-
+  @ViewChild('tabledriver') tabledriver: MatTable<any>;
   @ViewChild('input') input: ElementRef;
 
   constructor( private driverService: DriverService, private dialog: MatDialog, private adminS: AdminService) { }
@@ -80,9 +80,22 @@ export class DriverlistComponent implements OnInit {
     this.adminS.refreshToken().subscribe(res=>{console.log('ok');return res})
     console.log('click')
   }
-  refresh(){
-    console.log('refreshdata');
-    return this.dataSource;
+  public refresh(){
+    this.driverService.getAll().subscribe(res=>{
+      this.driverarray  = res;
+      this.array2 = res;
+      // this.array = res;
+      let arraytemp = this.array2.filter(function(value) {
+        return value.is_staff === false && value.driver != null;
+      });
+      console.log('final', this.array, arraytemp);
+      this.dataSource = new MatTableDataSource(arraytemp);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+
+    });
+    this.tabledriver.renderRows();
+
 
   }
 
@@ -97,7 +110,10 @@ export class DriverlistComponent implements OnInit {
     // this.dialog.open(DriverDialogComponent,dialogConfig);
     const dialogRef = this.dialog.open(DriverDialogComponent, dialogConfig);
 
-    dialogRef.afterClosed().subscribe(data => {this.refresh()});
+    dialogRef.afterClosed().subscribe(data => {
+      this.refresh();
+      return data;
+    });
   }
 
   editDriver(id:number,last_name:string,first_name:string,username:string,password:string,is_staff:boolean,
@@ -111,7 +127,11 @@ export class DriverlistComponent implements OnInit {
       birthdate:birthdate,owner:owner,adress:adress,addnum:addnum,locality:locality,licenseExp:licenseExp}
     const dialogRef = this.dialog.open(EditdriverDialogComponent,dialogConfig);
     console.log("send to dialog",dialogConfig.data)
-    dialogRef.afterClosed().subscribe(res=>{this.ngOnInit()})
+    dialogRef.afterClosed().subscribe(res=>{
+      this.refresh();
+      return res;
+      // this.ngOnInit()
+    })
 }
   delDriver(id:number,last_name:string,first_name:string){
     const dialogConfig = new MatDialogConfig();
@@ -121,7 +141,10 @@ export class DriverlistComponent implements OnInit {
     dialogConfig.width = "275px";
     dialogConfig.data = {id:id,last_name:last_name,first_name:first_name}
     const dialogRef = this.dialog.open(DeldriverDialogComponent,dialogConfig);
-    dialogRef.afterClosed().subscribe(res=>{this.ngOnInit();return res})
+    dialogRef.afterClosed().subscribe(res=>{
+      this.refresh();
+      return res;
+    })
   }
 
 
