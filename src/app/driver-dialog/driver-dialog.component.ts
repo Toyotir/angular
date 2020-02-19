@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef,MatFormFieldControl} from "@angular/material";
+import {MAT_DIALOG_DATA, MatDialogRef,MatFormFieldControl,MatSnackBar} from "@angular/material";
 import {FormBuilder, Validators, AbstractControl, FormControl, FormGroup, FormGroupName} from "@angular/forms";
 import {Driver,DriverService} from "../driver.service"
 import { formatDate, DatePipe } from '@angular/common';
@@ -20,7 +20,7 @@ export class DriverDialogComponent implements OnInit {
   minFromDate = new Date((new Date().getTime() + this.oneYear));
   validation_messages: any;
   constructor(private driverService: DriverService, private fb: FormBuilder, private dialogRef: MatDialogRef<DriverDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) data: any, private datepipe: DatePipe) {
+    @Inject(MAT_DIALOG_DATA) data: any, private datepipe: DatePipe,private snackBar: MatSnackBar) {
       this.form = this.fb.group({
         last_name : ['', Validators.required],
         first_name: ['', Validators.required],
@@ -127,7 +127,14 @@ export class DriverDialogComponent implements OnInit {
 
 
   save() {
-    this.dialogRef.close(this.driverService.createDriver(this.form.value).subscribe());
+    this.dialogRef.close(this.driverService.createDriver(this.form.value).subscribe(() => {
+      this.snackBar.open('succes','undo', {
+        duration: 2000,
+      });
+    },err=>{
+      alert(err);
+    // this.dialogRef
+    }));
     console.log('save:' + this.form.value);
   }
   close() {

@@ -1,12 +1,13 @@
+import { Make, MakeRes, ModelRes, Model } from './../car.service';
 import { Component, OnInit } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef,MatFormFieldControl,MatDialog,MatSnackBar, MatDialogConfig} from "@angular/material";
 import {FormBuilder, Validators,ValidatorFn,FormControl, FormGroup,AbstractControl} from "@angular/forms";
 import {SocietyService,Society} from "../society.service"
 import { formatDate, DatePipe } from '@angular/common';
 import {Car,CarService} from "../car.service"
-import { Observable, observable } from 'rxjs';
+import { Observable, observable, timer, Subscription } from 'rxjs';
 import { ArrayDataSource } from '@angular/cdk/collections';
-import { catchError } from 'rxjs/operators';
+import { catchError, startWith, map, debounceTime, delay } from 'rxjs/operators';
 import { AdminService } from '../admin.service';
 
 // import {ValidateTaxi} from '../validator'
@@ -24,9 +25,15 @@ export class AddcarDialogComponent implements OnInit {
   brahhh = 'false'
   public ctrlpl: FormControl;
   validation_messages: any;
-
+  listMakes: any = [];
+  listModels: any = [];
+  filteredMakes: Observable<string[]>;
+  filteredModels: Observable<string[]>;
+  // list: string[] = ['azert','qsdf','qfffff']
+  makesub: Subscription;
   constructor(private carService: CarService, private adminS: AdminService, private fb: FormBuilder,
     private dialogRef: MatDialogRef<AddcarDialogComponent>,private dialog: MatDialog,private snackBar: MatSnackBar) {
+
       this.validation_messages = {
         'brand': [
             { type: 'required', message: 'brand is required.' },
@@ -53,6 +60,22 @@ export class AddcarDialogComponent implements OnInit {
       platenum: this.ctrlpl,
       numTaxi: [Number, [Validators.required, Validators.min(0), Validators.max(9999)], [this.checknumtaxi()]],
     });
+    this.getListMakes();
+    // this.listMakes = this.form.get('brand').valueChanges.pipe(startWith(''),map((value =>this._filter(value))))
+    
+    
+    console.log('filtered',this.filteredMakes)
+    // this.getmodel()
+  }
+  public _filter(value:string):string[] {
+    const filterValue = value.toLowerCase();
+    console.log('filter',filterValue)
+    return this.listMakes.filter(option => option.MakeName.toLowerCase().includes(filterValue));
+  }
+  public _filter2(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    console.log('filter',filterValue)
+    return this.listModels.filter(option => option.Model_Name.toLowerCase().includes(filterValue));
   }
 
   // validator custom avec timer et si t'ecris pas
@@ -96,6 +119,22 @@ export class AddcarDialogComponent implements OnInit {
     };
   }
 
+  getListMakes(){
+    this.carService.getAllMakes().subscribe(res => {
+      this.listMakes = res.Results;
+      this.filteredMakes = this.form.controls.brand.valueChanges.pipe(startWith(""),map((value =>this._filter(value))));
+      console.log('list',this.listMakes);
+    });
+  }
+  getModel(make_name) {
+    this.carService.getModel(make_name).subscribe(res => {
+      console.log('model',make_name,res)
+      this.listModels = res.Results;
+      // on met le change value du filter ici car sinon la list est vide dans le nginit et n'affiche pas la liste dans l'autocomplete  
+      this.filteredModels = this.form.controls.model.valueChanges.pipe(startWith(""),map((value =>this._filter2(value))));
+      console.log('model',this.listModels);
+    });
+  }
   erorxx(){
     return this.form.hasError('validate') ? '' : 'You must enter a value';
   }

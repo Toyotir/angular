@@ -75,6 +75,7 @@ export class RoadDialogComponent implements OnInit {
     dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '700px';
+    console.log('ride',id)
     dialogConfig.data = { id: id };
     const dialogRef = this.dialog.open(MapsheetComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(res => {

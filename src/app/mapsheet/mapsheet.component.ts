@@ -40,7 +40,6 @@ export class MapsheetComponent implements OnInit, AfterViewInit, OnDestroy {
   toLatLngArray: Array<{ lat: number, lng: number }> = [];
   zoom: number = 11;
   polymeters;
-
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private societyService: SocietyService,
   private mapsheet: MatDialogRef<MapsheetComponent>) {
     console.log('idrideconstrucotr', data.id);

@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Http, RequestOptions } from "@angular/http";
 import { Observable,interval,timer } from 'rxjs';
-import { map,catchError } from 'rxjs/operators';
+import { map,catchError,mergeMap } from 'rxjs/operators';
 import { JwtHelperService,JwtModule,JwtModuleOptions } from '@auth0/angular-jwt';
 import { stringify } from 'querystring';
 import { DatePipe } from '@angular/common';
-
+import { DriverService } from './driver.service'
 export class TokenDRF {
   token:string;
   constructor(data){
@@ -37,11 +37,12 @@ const URL = 'https://taxidrf.herokuapp.com';
 export class AdminService {
   private httpOptions: any;
   isLog: boolean;
+  isAdmin: boolean;
   public token: string;
   public token_expires: Date;
   public expirationDate;
   public isExpired;
-  isAdmin: boolean;
+  // isAdmin: boolean;
   public username: string;
   password: string;
   redirectUrl: string;
@@ -113,7 +114,7 @@ export class AdminService {
         }
       }, err => {
         // this.errors = err['error'];
-      }
+       }
     ));
   }
 
@@ -136,7 +137,8 @@ export class AdminService {
     const helper = new JwtHelperService();
     var exp = helper.decodeToken(token)
     const timer3 = timer(new Date(exp.exp*1000-10000), 3600000);
-    console.log('timer3',timer3)
+    // const timer3 = timer(8000, 8000);
+    // console.log('timer3',timer3)
     timer3.subscribe(res=>{
       console.log('in timer',res,exp.exp+3590000,timer3)
         this.refreshToken().subscribe(res=>{ res })
@@ -157,14 +159,14 @@ export class AdminService {
     this.username = null
     this.password = null
     this.tokenStorage = null;
-    sessionStorage.removeItem('username')
-    sessionStorage.removeItem('password')
-    sessionStorage.removeItem('token')
+    sessionStorage.removeItem('username');
+    sessionStorage.removeItem('password');
+    sessionStorage.removeItem('token');
   }
 
   private updateData(token) {
     const helper = new JwtHelperService();
-    console.log('token',helper.decodeToken(token.token),helper.getTokenExpirationDate(token.token))
+    // console.log('token',helper.decodeToken(token.token),helper.getTokenExpirationDate(token.token))
     const exp = helper.decodeToken(token.token)
     this.token = token;
     // this.errors = [];

@@ -9,11 +9,11 @@ import { formatDate, DatePipe } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SocietyService } from "./society.service";
-import { DriverService } from "./driver.service";
-import { CarService } from "./car.service"
-import { AdminService } from "./admin.service"
-import { AuthGuard } from './auth.guard'
+import { SocietyService } from './society.service';
+import { DriverService } from './driver.service';
+import { CarService } from './car.service';
+import { AdminService } from './admin.service';
+import { AuthGuard } from './auth.guard';
 import { SocietyListComponent } from './societylist.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -33,8 +33,10 @@ import {
   MatSelectModule,
   MatOptionModule,
   MatExpansionModule,
-  MatToolbarModule,MatSnackBarModule
-} from "@angular/material";
+  MatAutocompleteModule,
+  MatToolbarModule,
+  MatSnackBarModule
+} from '@angular/material';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { DriverlistComponent } from './driverlist/driverlist.component';
 import { DriverDialogComponent } from './driver-dialog/driver-dialog.component';
@@ -52,6 +54,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { AgmCoreModule, GoogleMapsAPIWrapper, MarkerManager, InfoWindowManager } from '@agm/core';
 import { MapsheetComponent } from './mapsheet/mapsheet.component';
 import { DelsocDialogComponent } from './delsoc-dialog/delsoc-dialog.component';
+import { InvalidComponent } from './invalid/invalid.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +75,8 @@ import { DelsocDialogComponent } from './delsoc-dialog/delsoc-dialog.component';
     LoginComponent,
     LogoutComponent,
     MapsheetComponent,
-    DelsocDialogComponent
+    DelsocDialogComponent,
+    InvalidComponent
   ],
   imports: [
     BrowserModule,
@@ -98,7 +102,9 @@ import { DelsocDialogComponent } from './delsoc-dialog/delsoc-dialog.component';
     MatExpansionModule,
     MatFormFieldModule,
     MatBottomSheetModule,
-    MatToolbarModule,MatSnackBarModule,
+    MatAutocompleteModule,
+    MatToolbarModule,
+    MatSnackBarModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyB3o5jaBpAwa8r6c3cFx6ZcD8uaKMs3s8k'
     })
