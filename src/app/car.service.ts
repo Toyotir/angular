@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, observable } from 'rxjs';
 import { Http, RequestOptions } from "@angular/http";
 import { map, catchError } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 import { AdminService } from './admin.service'
 import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
+import { parse } from 'querystring';
 
 
 
@@ -25,6 +26,32 @@ export class Car {
     this.society = data.society;
   }
 }
+export class MakeRes {
+  MakeID: number;
+  MakeName: string;
+  constructor(data) {
+    this.MakeID = data.MakeID;
+    this.MakeName = data.MakeName;
+  }
+}
+export class Make {
+  count: number;
+  message: string;
+  searchCriteria: any;
+  Results: MakeRes[];
+  constructor(data) {
+    this.count = data.count;
+    this.message = data.message;
+    this.searchCriteria = data.searchCriteria;
+    this.Results = data.Results;
+  }
+}
+export class ModelRes {
+  Model_Name: string;
+}
+export class Model {
+  Results: ModelRes[];
+}
 
 export class ErrorCar {
   platenum: string;
@@ -44,6 +71,7 @@ const URL = 'http://localhost:8000';
   providedIn: 'root'
 })
 export class CarService {
+  carfilter: any =[]
   eroorhandle
   constructor(private http: Http, private adminS: AdminService, private httpC: HttpClient) {
 
@@ -122,6 +150,15 @@ export class CarService {
 
   }
 
-
+  public getAllMakes(): Observable<Make> {
+    return this.httpC.get<Make>('https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/car?format=json').pipe(map(res => {
+      return res;
+    }));;
+  }
+  public getModel(brand): Observable<Model> {
+    return this.httpC.get<Model>('https://vpic.nhtsa.dot.gov/api/vehicles/getmodelsformake/' + brand + '?format=json').pipe(map(res => {
+      return res;
+    }));
+  }
 
 }

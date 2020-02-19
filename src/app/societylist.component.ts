@@ -1,14 +1,15 @@
 import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
-import { SocietyService, Society } from "./society.service";
-import { MatPaginator, MatSort, MatTableDataSource, MatDialog, MatDialogConfig } from "@angular/material";
-import { SocDataSource } from "./socdatasource";
-import { SocaddDialogComponent } from "./socadd-dialog/socadd-dialog.component";
-import { SoceditDialogComponent } from "./socedit-dialog/socedit-dialog.component";
-import { RoadDialogComponent } from "./road-dialog/road-dialog.component"
+import { SocietyService, Society } from './society.service';
+import { MatPaginator, MatSort, MatTableDataSource, MatDialog, MatDialogConfig, MatTable } from '@angular/material';
+import { SocDataSource } from './socdatasource';
+import { SocaddDialogComponent } from './socadd-dialog/socadd-dialog.component';
+import { SoceditDialogComponent } from './socedit-dialog/socedit-dialog.component';
+import { RoadDialogComponent } from './road-dialog/road-dialog.component';
 import { Observable } from 'rxjs';
-import { Driver, DriverService, User } from "./driver.service"
-import {Car,CarService} from "./car.service"
-import {AdminService} from './admin.service'
+import { Driver, DriverService, User } from './driver.service';
+import {Car, CarService} from './car.service';
+import {AdminService} from './admin.service';
+import { DelsocDialogComponent } from './delsoc-dialog/delsoc-dialog.component';
 
 
 @Component({
@@ -21,18 +22,18 @@ export class SocietyListComponent implements OnInit {
     // ss:Society[]
     society: Society;
     // dataSource = new SocDataSource(this.societyService);
-    dataSource : MatTableDataSource<any>;
+    dataSource = new MatTableDataSource;
     datas2 = SocietyService;
     datarow: Society;
     refreshdata: SocDataSource;
     displayedColumns = ['name', 'tva', 'option'];
     @ViewChild(MatPaginator) paginator: MatPaginator;
-
+    @ViewChild('tablesoc') tablesoc: MatTable<any>;
     @ViewChild(MatSort) sort: MatSort;
 
     @ViewChild('input') input: ElementRef;
 
-    constructor(private societyService: SocietyService, private dialog: MatDialog,public adminS:AdminService) { }
+    constructor(private societyService: SocietyService, private dialog: MatDialog, public adminS: AdminService) { }
 
     ngOnInit() {
         this.societyService.getAll().subscribe(res => {
@@ -45,10 +46,14 @@ export class SocietyListComponent implements OnInit {
 
     }
 
-    refresh() {
-        return this.societyService.getAll().subscribe(res => {
-            this.societies = res, console.log(res);
-        })
+    private refresh() {
+        this.societyService.getAll().subscribe(res => {
+          this.dataSource.data = res;
+          this.dataSource.sort = this.sort;
+          this.dataSource.paginator = this.paginator;
+          // this.societies = res, console.log(res);
+        });
+        this.tablesoc.renderRows();
     }
 
     public onRowClicked(row) {
@@ -61,33 +66,44 @@ export class SocietyListComponent implements OnInit {
 
         dialogConfig.disableClose = false;
         dialogConfig.autoFocus = true;
-        dialogConfig.width = "275px";
+        dialogConfig.width = '275px';
         const dialogRef = this.dialog.open(SocaddDialogComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(res => {
-          this.ngOnInit();
+          this.refresh();
           return res ;
         });
 
     }
 
-    editSoc(id: number, name: string, tva: string, owners: User[], adress: string, addnum: number, locality: number, drivers:Driver[],cars:Car[]) {
+    editSoc(id: number, name: string, tva: string, owners: User[],
+      adress: string, addnum: number, locality: number, drivers:Driver[],cars:Car[]) {
         const dialogConfig = new MatDialogConfig();
         console.log("send to dialog before data", drivers)
         dialogConfig.disableClose = false;
         dialogConfig.autoFocus = true;
         dialogConfig.width = "275px";
-        dialogConfig.data = { id: id, name: name, tva: tva, owners: [owners], adress: adress, addnum: addnum, locality: locality, drivers:[drivers],cars:[cars]}
+        dialogConfig.data = { id: id, name: name, tva: tva, owners: [owners],
+          adress: adress, addnum: addnum, locality: locality, drivers:[drivers],cars:[cars]}
         const dialogRef = this.dialog.open(SoceditDialogComponent, dialogConfig);
         console.log("send to dialog", dialogConfig.data)
-        dialogRef.afterClosed().subscribe(res => { this.ngOnInit();return res })
+        dialogRef.afterClosed().subscribe(res => {
+          this.refresh();
+          return res;
+        });
     }
-    delSoc() {
+    delSoc(id: number, name: string) {
         // this.onRowClicked
+        const dialogConfig = new MatDialogConfig();
 
-        this.societyService.deleteSociety(this.datarow).subscribe(res => { this.ngOnInit();this.societies.splice(this.societies.indexOf(this.datarow), 1)});
-        // return this.societyService.deleteSociety(this.datarow).subscribe(res=>{this.dataSource.loadingSubject;console.log('effacéééééé'+res)});
-
-
+        dialogConfig.disableClose = false;
+        dialogConfig.autoFocus = true;
+        dialogConfig.width = "300px";
+        dialogConfig.data = {id: id, name: name};
+        const dialogRef = this.dialog.open(DelsocDialogComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe(res => {
+          this.refresh();
+          return res;
+        });
     }
 
     details(name: any, id: any) {
@@ -98,6 +114,7 @@ export class SocietyListComponent implements OnInit {
         dialogConfig.data = { name: name, id: id };
         const dialogRef = this.dialog.open(RoadDialogComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(res => {
+          // this.refresh();
           return res;
         });
     }

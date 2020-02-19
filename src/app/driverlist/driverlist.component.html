@@ -18,12 +18,12 @@
     <mat-form-field>
         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search driver" #input>
     </mat-form-field>
-    <mat-table [dataSource]="dataSource" matSort>
-        <ng-container matColumnDef="lastname">
+    <mat-table #tableuser [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="last_name">
             <mat-header-cell *matHeaderCellDef mat-sort-header>Lastname</mat-header-cell>
             <mat-cell *matCellDef="let dri">{{dri.last_name}}</mat-cell>
         </ng-container>
-        <ng-container matColumnDef="firstname">
+        <ng-container matColumnDef="first_name">
             <mat-header-cell *matHeaderCellDef mat-sort-header>Firstname</mat-header-cell>
             <mat-cell *matCellDef="let dri">{{dri.first_name}}</mat-cell>
         </ng-container>

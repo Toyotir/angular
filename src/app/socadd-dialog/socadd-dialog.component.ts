@@ -146,7 +146,9 @@ export class SocaddDialogComponent implements OnInit {
   // }
 
   save() {
-    this.dialogRef.close(this.societyService.createDriver(this.form.value));
+    this.dialogRef.close(this.societyService.createsoc(this.form.value).subscribe(()=>{
+      console.log('ok')
+    }));
     console.log('save:' + this.form.value);
   }
   close() {

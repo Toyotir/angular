@@ -1,3 +1,7 @@
 <p>
-  delsoc-dialog works!
+  Are you sure to delete society registered {{data.name}} ?
 </p>
+<mat-dialog-actions>
+      <button class="mat-raised-button"(click)="close()">Close</button>
+      <button type="submit" class="mat-raised-button mat-primary"(click)="confirmDel()">Confirm</button>
+  </mat-dialog-actions>

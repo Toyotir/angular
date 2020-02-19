@@ -93,7 +93,7 @@ export class CarlistComponent implements OnInit {
     dialogConfig.data = {id: id, platenum: platenum};
     const dialogRef = this.dialog.open(DelcarDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(res => {
-      this.ngOnInit();
+      this.refresh();
       return res;
     });
   }

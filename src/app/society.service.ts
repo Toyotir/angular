@@ -111,21 +111,36 @@ export class SocietyService {
         })
     }
     //society add
-    public createDriver(data: Society) {
-        console.log("Dialog outputService:", data)
+    public createSociety(data: Society) {
+        // console.log("Dialog outputService:", data);
         // return this.http.post(`${URL}/api/drivers`,JSON.stringify(data));
         return this.httpc.post(`${URL}/api/societies`, data, {
             headers: {
                 ['Content-Type']: 'application/json',
                 ['Authorization']: 'JWT ' + this.adminS.tokenStorage.token,
             }
-        })
-            .pipe(map(res => { return res })), catchError(err => { return throwError(err + data) });
+        }).pipe(map(res => {
+          return res;
+        })), catchError(err => {
+          return throwError(err + data);
+        });
+    }
+    public createsoc(data: Society){
+      return this.httpc.post(`${URL}/api/societies`, data, {
+        headers: {
+            ['Content-Type']: 'application/json',
+            ['Authorization']: 'JWT ' + this.adminS.tokenStorage.token,
+        }
+      }).pipe(map(res => {
+        return res;
+      }), catchError(err => {
+        return throwError(err+data);
+      }));
     }
 
-    public deleteSociety(data: Society): Observable<boolean> {
-        console.log("Dialog outputService:", data.id)
-        return this.httpc.delete(`${URL}/api/societies/` + data.id, {
+    public deleteSociety(data: string): Observable<boolean> {
+        console.log("Dialog outputService:", data)
+        return this.httpc.delete(`${URL}/api/societies/` + data, {
             headers: {
                 ['Content-Type']: 'application/json',
                 ['Authorization']: 'JWT ' + this.adminS.tokenStorage.token,
