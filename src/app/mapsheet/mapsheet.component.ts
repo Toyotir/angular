@@ -118,26 +118,67 @@ export class MapsheetComponent implements OnInit, AfterViewInit, OnDestroy {
       var routline = new H.map.Polyline(
         linestring, { style: { strokeColor: 'red', lineWidth: 4 },arrows: { fillColor: 'blue', frequency: 3, width: 3, length: 3 }}
       )
+      // Create the parameters for the reverse geocoding request:
+      var reverseGeocodingParameters = {
+        prox: latlng.lat+','+latlng.lng,
+        mode: 'retrieveAddresses',
+        maxresults: 1
+      };
+      var reverseGeocodingParameters2 = {
+        prox: latlng2.lat+','+latlng2.lng,
+        mode: 'retrieveAddresses',
+        maxresults: 1
+      };
+      function onSuccess2(result) {
+        var location = result.Response.View[0].Result[0];
+        // getPolylineLength(linestring)
+        // Create an InfoBubble at the returned location with
+        // the address as its contents:
+        ui.addBubble(new H.ui.InfoBubble({
+            lat: location.Location.DisplayPosition.Latitude,
+            lng: location.Location.DisplayPosition.Longitude
+           }, { content:'Stop: '+ location.Location.Address.Label }));
+      };
+      function onSuccess(result) {
+        var location = result.Response.View[0].Result[0];
+      
+        // Create an InfoBubble at the returned location with
+        // the address as its contents:
+        ui.addBubble(new H.ui.InfoBubble({
+            lat: location.Location.DisplayPosition.Latitude,
+            lng: location.Location.DisplayPosition.Longitude
+           }, { content: 'Start: '+location.Location.Address.Label }));
+      };
+      var geocoder = this.hereplatform.getGeocodingService();
+      geocoder.reverseGeocode(
+        reverseGeocodingParameters,
+        onSuccess,
+        function(e) { alert(e); });
+            geocoder.reverseGeocode(
+        reverseGeocodingParameters2,
+        onSuccess2,
+        function(e) { alert(e); });
+
       var startMarker = new H.map.Marker({
         lat: latlng.lat,
         lng: latlng.lng,
       });
-      var bubble  =  new H.ui.InfoBubble({
-        lat: latlng.lat,
-        lng: latlng.lng,
-      }, {content : 'Start'});
-      ui.addBubble(bubble);
+      // var bubble  =  new H.ui.InfoBubble({
+      //   lat: latlng.lat,
+      //   lng: latlng.lng,
+      // }, {content : 'Start'});
+      // ui.addBubble(bubble);
 
       // Create a marker for the end point:
       var endMarker = new H.map.Marker({
         lat: latlng2.lat,
         lng: latlng2.lng,
       });
-      var bubble2  =  new H.ui.InfoBubble({
-        lat: latlng2.lat,
-        lng: latlng2.lng,
-      }, {content : 'Stop'});
-      ui.addBubble(bubble2);
+      // var bubble2  =  new H.ui.InfoBubble({
+      //   lat: latlng2.lat,
+      //   lng: latlng2.lng,
+      // }, {content : 'Stop'});
+      // ui.addBubble(bubble2);
       map.addObjects([routline,startMarker, endMarker]);
       map.setViewBounds(routline.getBounds());
 
