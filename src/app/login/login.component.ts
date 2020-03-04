@@ -33,9 +33,9 @@ export class LoginComponent implements OnInit {
 
       }
     },err => {
-      // this.snackbar.open('failed','undo', {
-      //   duration: 2000,
-      // });
+      this.snackbar.open('Error connection','undo', {
+        duration: 5000,
+      });
     })
   }
 
