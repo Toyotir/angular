@@ -116,7 +116,7 @@ export class MapsheetComponent implements OnInit, AfterViewInit, OnDestroy {
       console.log('latlng', latlng,latlng2)
       // linestring.pushPoint(polylines);
       var routline = new H.map.Polyline(
-        linestring, { style: { strokeColor: 'green', lineWidth: 4 }}
+        linestring, { style: { strokeColor: 'red', lineWidth: 4 },arrows: { fillColor: 'blue', frequency: 3, width: 3, length: 3 }}
       )
       var startMarker = new H.map.Marker({
         lat: latlng.lat,
@@ -125,7 +125,7 @@ export class MapsheetComponent implements OnInit, AfterViewInit, OnDestroy {
       var bubble  =  new H.ui.InfoBubble({
         lat: latlng.lat,
         lng: latlng.lng,
-      }, {content : 'depart'});
+      }, {content : 'Start'});
       ui.addBubble(bubble);
 
       // Create a marker for the end point:
@@ -136,7 +136,7 @@ export class MapsheetComponent implements OnInit, AfterViewInit, OnDestroy {
       var bubble2  =  new H.ui.InfoBubble({
         lat: latlng2.lat,
         lng: latlng2.lng,
-      }, {content : 'arrival'});
+      }, {content : 'Stop'});
       ui.addBubble(bubble2);
       map.addObjects([routline,startMarker, endMarker]);
       map.setViewBounds(routline.getBounds());
