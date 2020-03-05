@@ -33,7 +33,7 @@ export class DriverDialogComponent implements OnInit {
           adress: ['', Validators.required],
           addnum: [Number, [Validators.required, Validators.min(1)]],
           locality: [Number, [Validators.required, Validators.min(1)]],
-          licenseExp: [this.datepipe.transform(new Date(this.minFromDate), 'yyyy-MM-dd'), Validators.required]
+          licenseExp: [this.datepipe.transform(new Date(this.minFromDate), 'yyyy-MM-dd')]
         })
       });
     }

@@ -52,7 +52,7 @@ export class MapsheetComponent implements OnInit, AfterViewInit, OnDestroy {
       console.log(res)
       this.ride = res[0].idr;
       this.depart = res[0].boarding;
-      this.arrived = res[0].boarding;
+      this.arrived = res[0].landing;
       this.cost = res[0].price;
       polylines = res[0].path;
       console.log('voila',res, this.ride, this.depart, polylines);

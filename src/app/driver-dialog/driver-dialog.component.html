@@ -87,11 +87,11 @@
       <input matInput [matDatepicker]="licensepicker" [min]="minFromDate"  placeholder="License Expire" formControlName="licenseExp">
       <mat-datepicker-toggle matSuffix [for]="licensepicker" ></mat-datepicker-toggle>
       <mat-datepicker #licensepicker></mat-datepicker>
-      <mat-error *ngFor="let validation of validation_messages.licenseExp">
+      <!-- <mat-error *ngFor="let validation of validation_messages.licenseExp">
         <div *ngIf="this.form.get('driver.licenseExp').hasError(validation.type)">
           {{ validation.message }}
         </div>
-    </mat-error>
+    </mat-error> -->
     </mat-form-field>
 
   </mat-dialog-content>
